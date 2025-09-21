@@ -1,0 +1,9 @@
+socialtruthdao/
+├── frontend/
+├── backend/
+├── smart-contracts/
+├── assets/
+├── docs/
+├── .env.example
+├── README.md
+└── LICENSE
