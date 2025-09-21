@@ -1,0 +1,24 @@
+-- News item submitted by a user
+data NewsItem = NewsItem
+  { newsId       :: Integer
+  , contentHash  :: BuiltinByteString  -- IPFS or metadata hash
+  , submitter    :: PubKeyHash
+  , timestamp    :: POSIXTime
+  }
+
+-- Vote cast by a user
+data Vote = Vote
+  { voter        :: PubKeyHash
+  , newsId       :: Integer
+  , voteValue    :: Bool  -- True = truthful, False = false
+  , stakeAmount  :: Integer
+  }
+
+-- Outcome of voting
+data VoteOutcome = VoteOutcome
+  { newsId       :: Integer
+  , result       :: Bool
+  , totalVotes   :: Integer
+  , trueVotes    :: Integer
+  , falseVotes   :: Integer
+  }
