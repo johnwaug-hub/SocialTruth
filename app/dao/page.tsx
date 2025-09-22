@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { Header } from "@/components/header"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -139,282 +140,285 @@ export default function DAOPage() {
   }
 
   return (
-    <div className="container mx-auto px-6 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Social Truth DAO</h1>
-        <p className="text-muted-foreground">
-          Decentralized governance for the Social Truth ecosystem. Participate in proposals, vote on protocol changes,
-          and help shape the future of truth verification.
-        </p>
-      </div>
+    <>
+      <Header />
+      <div className="container mx-auto px-6 py-8">
+        <div className="mb-8">
+          <h1 className="text-3xl font-bold mb-2">Social Truth DAO</h1>
+          <p className="text-muted-foreground">
+            Decentralized governance for the Social Truth ecosystem. Participate in proposals, vote on protocol changes,
+            and help shape the future of truth verification.
+          </p>
+        </div>
 
-      {/* DAO Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                <Building2 className="w-5 h-5 text-primary" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Active Proposals</p>
-                <p className="text-2xl font-bold">{proposals.filter((p) => p.status === "active").length}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
-                <Users className="w-5 h-5 text-green-500" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">DAO Members</p>
-                <p className="text-2xl font-bold">1,247</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
-                <Coins className="w-5 h-5 text-blue-500" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Treasury TRUTH</p>
-                <p className="text-2xl font-bold">{treasuryStats.totalTruth.toLocaleString()}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardContent className="p-6">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
-                <TrendingUp className="w-5 h-5 text-purple-500" />
-              </div>
-              <div>
-                <p className="text-sm text-muted-foreground">Your Voting Power</p>
-                <p className="text-2xl font-bold">{isConnected ? truthBalance?.toLocaleString() || "0" : "0"}</p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid w-full grid-cols-3">
-          <TabsTrigger value="proposals">Proposals</TabsTrigger>
-          <TabsTrigger value="treasury">Treasury</TabsTrigger>
-          <TabsTrigger value="governance">Governance</TabsTrigger>
-        </TabsList>
-
-        <TabsContent value="proposals" className="space-y-6">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-semibold">Active Proposals</h2>
-            <Button onClick={() => setShowCreateProposal(true)} className="gap-2">
-              <Plus className="w-4 h-4" />
-              Create Proposal
-            </Button>
-          </div>
-
-          {showCreateProposal && (
-            <Card>
-              <CardHeader>
-                <CardTitle>Create New Proposal</CardTitle>
-                <CardDescription>Submit a proposal for DAO consideration</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div>
-                  <Label htmlFor="title">Proposal Title</Label>
-                  <Input
-                    id="title"
-                    value={newProposal.title}
-                    onChange={(e) => setNewProposal({ ...newProposal, title: e.target.value })}
-                    placeholder="Enter proposal title"
-                  />
+        {/* DAO Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <Building2 className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <Label htmlFor="description">Description</Label>
-                  <Textarea
-                    id="description"
-                    value={newProposal.description}
-                    onChange={(e) => setNewProposal({ ...newProposal, description: e.target.value })}
-                    placeholder="Describe your proposal in detail"
-                    rows={4}
-                  />
+                  <p className="text-sm text-muted-foreground">Active Proposals</p>
+                  <p className="text-2xl font-bold">{proposals.filter((p) => p.status === "active").length}</p>
                 </div>
-                <div className="flex gap-4">
-                  <Button onClick={handleCreateProposal}>Submit Proposal</Button>
-                  <Button variant="outline" onClick={() => setShowCreateProposal(false)}>
-                    Cancel
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
+              </div>
+            </CardContent>
+          </Card>
 
-          <div className="space-y-4">
-            {proposals.map((proposal) => (
-              <Card key={proposal.id}>
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-green-500/10 rounded-lg flex items-center justify-center">
+                  <Users className="w-5 h-5 text-green-500" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">DAO Members</p>
+                  <p className="text-2xl font-bold">1,247</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-blue-500/10 rounded-lg flex items-center justify-center">
+                  <Coins className="w-5 h-5 text-blue-500" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Treasury TRUTH</p>
+                  <p className="text-2xl font-bold">{treasuryStats.totalTruth.toLocaleString()}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardContent className="p-6">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 bg-purple-500/10 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="w-5 h-5 text-purple-500" />
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Your Voting Power</p>
+                  <p className="text-2xl font-bold">{isConnected ? truthBalance?.toLocaleString() || "0" : "0"}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="proposals">Proposals</TabsTrigger>
+            <TabsTrigger value="treasury">Treasury</TabsTrigger>
+            <TabsTrigger value="governance">Governance</TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="proposals" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-xl font-semibold">Active Proposals</h2>
+              <Button onClick={() => setShowCreateProposal(true)} className="gap-2">
+                <Plus className="w-4 h-4" />
+                Create Proposal
+              </Button>
+            </div>
+
+            {showCreateProposal && (
+              <Card>
                 <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div>
-                      <CardTitle className="flex items-center gap-2">
-                        {proposal.title}
-                        <Badge variant="secondary" className={`${getStatusColor(proposal.status)} text-white`}>
-                          {getStatusIcon(proposal.status)}
-                          {proposal.status}
-                        </Badge>
-                      </CardTitle>
-                      <CardDescription>{proposal.description}</CardDescription>
-                    </div>
-                  </div>
+                  <CardTitle>Create New Proposal</CardTitle>
+                  <CardDescription>Submit a proposal for DAO consideration</CardDescription>
                 </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between text-sm mb-2">
-                        <span>
-                          Votes: {proposal.totalVotes.toLocaleString()} / {proposal.requiredQuorum.toLocaleString()}{" "}
-                          required
-                        </span>
-                        <span>{Math.round((proposal.totalVotes / proposal.requiredQuorum) * 100)}% quorum</span>
-                      </div>
-                      <Progress value={(proposal.totalVotes / proposal.requiredQuorum) * 100} className="mb-2" />
-
-                      <div className="flex justify-between text-sm">
-                        <span className="text-green-600">For: {proposal.votesFor.toLocaleString()}</span>
-                        <span className="text-red-600">Against: {proposal.votesAgainst.toLocaleString()}</span>
-                      </div>
-                    </div>
-
-                    {proposal.status === "active" && isConnected && (
-                      <div className="flex gap-2">
-                        <Button
-                          size="sm"
-                          onClick={() => handleVote(proposal.id, "for")}
-                          className="bg-green-600 hover:bg-green-700"
-                        >
-                          Vote For
-                        </Button>
-                        <Button size="sm" variant="destructive" onClick={() => handleVote(proposal.id, "against")}>
-                          Vote Against
-                        </Button>
-                      </div>
-                    )}
-
-                    <div className="text-xs text-muted-foreground">
-                      Proposed by: {proposal.proposer} • Ends: {proposal.endDate.toLocaleDateString()}
-                    </div>
+                <CardContent className="space-y-4">
+                  <div>
+                    <Label htmlFor="title">Proposal Title</Label>
+                    <Input
+                      id="title"
+                      value={newProposal.title}
+                      onChange={(e) => setNewProposal({ ...newProposal, title: e.target.value })}
+                      placeholder="Enter proposal title"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="description">Description</Label>
+                    <Textarea
+                      id="description"
+                      value={newProposal.description}
+                      onChange={(e) => setNewProposal({ ...newProposal, description: e.target.value })}
+                      placeholder="Describe your proposal in detail"
+                      rows={4}
+                    />
+                  </div>
+                  <div className="flex gap-4">
+                    <Button onClick={handleCreateProposal}>Submit Proposal</Button>
+                    <Button variant="outline" onClick={() => setShowCreateProposal(false)}>
+                      Cancel
+                    </Button>
                   </div>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </TabsContent>
+            )}
 
-        <TabsContent value="treasury" className="space-y-6">
-          <h2 className="text-xl font-semibold">DAO Treasury</h2>
+            <div className="space-y-4">
+              {proposals.map((proposal) => (
+                <Card key={proposal.id}>
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div>
+                        <CardTitle className="flex items-center gap-2">
+                          {proposal.title}
+                          <Badge variant="secondary" className={`${getStatusColor(proposal.status)} text-white`}>
+                            {getStatusIcon(proposal.status)}
+                            {proposal.status}
+                          </Badge>
+                        </CardTitle>
+                        <CardDescription>{proposal.description}</CardDescription>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex justify-between text-sm mb-2">
+                          <span>
+                            Votes: {proposal.totalVotes.toLocaleString()} / {proposal.requiredQuorum.toLocaleString()}{" "}
+                            required
+                          </span>
+                          <span>{Math.round((proposal.totalVotes / proposal.requiredQuorum) * 100)}% quorum</span>
+                        </div>
+                        <Progress value={(proposal.totalVotes / proposal.requiredQuorum) * 100} className="mb-2" />
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Treasury Holdings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between">
-                  <span>TRUTH Tokens</span>
-                  <span className="font-bold">{treasuryStats.totalTruth.toLocaleString()}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>ADA</span>
-                  <span className="font-bold">{treasuryStats.totalAda.toLocaleString()}</span>
-                </div>
-              </CardContent>
-            </Card>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-green-600">For: {proposal.votesFor.toLocaleString()}</span>
+                          <span className="text-red-600">Against: {proposal.votesAgainst.toLocaleString()}</span>
+                        </div>
+                      </div>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Monthly Allocations</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex justify-between">
-                  <span>Validator Rewards</span>
-                  <span className="font-bold">{treasuryStats.validatorRewards.toLocaleString()} TRUTH</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Proposal Funding</span>
-                  <span className="font-bold">{treasuryStats.proposalFunding.toLocaleString()} TRUTH</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Token Burn</span>
-                  <span className="font-bold text-red-600">{treasuryStats.monthlyBurn.toLocaleString()} TRUTH</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
+                      {proposal.status === "active" && isConnected && (
+                        <div className="flex gap-2">
+                          <Button
+                            size="sm"
+                            onClick={() => handleVote(proposal.id, "for")}
+                            className="bg-green-600 hover:bg-green-700"
+                          >
+                            Vote For
+                          </Button>
+                          <Button size="sm" variant="destructive" onClick={() => handleVote(proposal.id, "against")}>
+                            Vote Against
+                          </Button>
+                        </div>
+                      )}
 
-        <TabsContent value="governance" className="space-y-6">
-          <h2 className="text-xl font-semibold">Governance Framework</h2>
+                      <div className="text-xs text-muted-foreground">
+                        Proposed by: {proposal.proposer} • Ends: {proposal.endDate.toLocaleDateString()}
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Voting Requirements</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex justify-between">
-                  <span>Minimum TRUTH to Propose</span>
-                  <span className="font-bold">10,000 TRUTH</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Minimum TRUTH to Vote</span>
-                  <span className="font-bold">100 TRUTH</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Quorum Required</span>
-                  <span className="font-bold">5,000 votes</span>
-                </div>
-                <div className="flex justify-between">
-                  <span>Voting Period</span>
-                  <span className="font-bold">7 days</span>
-                </div>
-              </CardContent>
-            </Card>
+          <TabsContent value="treasury" className="space-y-6">
+            <h2 className="text-xl font-semibold">DAO Treasury</h2>
 
-            <Card>
-              <CardHeader>
-                <CardTitle>Proposal Categories</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <div className="flex justify-between">
-                  <span>Protocol Changes</span>
-                  <Badge variant="outline">High Impact</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span>Treasury Allocation</span>
-                  <Badge variant="outline">Medium Impact</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span>Validator Parameters</span>
-                  <Badge variant="outline">Medium Impact</Badge>
-                </div>
-                <div className="flex justify-between">
-                  <span>Governance Rules</span>
-                  <Badge variant="outline">High Impact</Badge>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </TabsContent>
-      </Tabs>
-    </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Treasury Holdings</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between">
+                    <span>TRUTH Tokens</span>
+                    <span className="font-bold">{treasuryStats.totalTruth.toLocaleString()}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>ADA</span>
+                    <span className="font-bold">{treasuryStats.totalAda.toLocaleString()}</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Monthly Allocations</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex justify-between">
+                    <span>Validator Rewards</span>
+                    <span className="font-bold">{treasuryStats.validatorRewards.toLocaleString()} TRUTH</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Proposal Funding</span>
+                    <span className="font-bold">{treasuryStats.proposalFunding.toLocaleString()} TRUTH</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Token Burn</span>
+                    <span className="font-bold text-red-600">{treasuryStats.monthlyBurn.toLocaleString()} TRUTH</span>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="governance" className="space-y-6">
+            <h2 className="text-xl font-semibold">Governance Framework</h2>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Voting Requirements</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex justify-between">
+                    <span>Minimum TRUTH to Propose</span>
+                    <span className="font-bold">10,000 TRUTH</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Minimum TRUTH to Vote</span>
+                    <span className="font-bold">100 TRUTH</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Quorum Required</span>
+                    <span className="font-bold">5,000 votes</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Voting Period</span>
+                    <span className="font-bold">7 days</span>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Proposal Categories</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <div className="flex justify-between">
+                    <span>Protocol Changes</span>
+                    <Badge variant="outline">High Impact</Badge>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Treasury Allocation</span>
+                    <Badge variant="outline">Medium Impact</Badge>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Validator Parameters</span>
+                    <Badge variant="outline">Medium Impact</Badge>
+                  </div>
+                  <div className="flex justify-between">
+                    <span>Governance Rules</span>
+                    <Badge variant="outline">High Impact</Badge>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+        </Tabs>
+      </div>
+    </>
   )
 }

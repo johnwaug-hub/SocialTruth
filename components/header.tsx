@@ -108,14 +108,16 @@ export function Header() {
                   )
                 })}
 
+                <div className="h-6 w-px bg-slate-600 mx-2" />
+
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className={`flex items-center gap-2 px-3 py-2 text-sm font-medium hover:bg-slate-800 transition-colors ${
+                      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md border transition-colors ${
                         governanceLinks.some((link) => pathname === link.href)
-                          ? "bg-yellow-400/20 text-yellow-400 border border-yellow-400/30"
-                          : "text-slate-300 hover:text-white"
+                          ? "bg-blue-500/20 text-blue-400 border-blue-400/30 shadow-sm"
+                          : "bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border-slate-600"
                       }`}
                     >
                       <Building2 className="w-4 h-4" />
@@ -125,7 +127,7 @@ export function Header() {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent
                     align="start"
-                    className="w-48 bg-slate-800 border-slate-700 shadow-xl"
+                    className="w-52 bg-slate-800 border-slate-700 shadow-xl"
                     sideOffset={5}
                   >
                     {governanceLinks.map((link) => {
@@ -136,10 +138,10 @@ export function Header() {
                           key={link.href}
                           asChild
                           className={`text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer ${
-                            isActive ? "bg-yellow-400/10 text-yellow-400" : ""
+                            isActive ? "bg-blue-500/10 text-blue-400" : ""
                           }`}
                         >
-                          <Link href={link.href} className="flex items-center gap-2 w-full px-2 py-1">
+                          <Link href={link.href} className="flex items-center gap-2 w-full px-3 py-2">
                             <Icon className="w-4 h-4" />
                             {link.label}
                           </Link>
