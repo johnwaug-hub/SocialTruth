@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { WalletConnection } from "@/components/wallet-connection"
 import { WalletInfo } from "@/components/wallet-info"
-import { Wallet, Users, Home, Vote, Trophy, ChevronDown, Building2, FileText, GitBranch } from "lucide-react"
+import { Wallet, HardHat, Home, Vote, Trophy, ChevronDown, Building2, FileText, GitBranch } from "lucide-react"
 import { walletManager } from "@/lib/cardano-wallet"
 import Image from "next/image"
 
@@ -43,9 +43,8 @@ export function Header() {
   }
 
   const navLinks = [
-    { href: "/", label: "Home", icon: Home },
     { href: "/voting", label: "Voting", icon: Vote },
-    { href: "/validators", label: "Validators", icon: Trophy },
+    { href: "/validators", label: "Validators", icon: HardHat },
     { href: "/reputation", label: "Reputation", icon: Trophy },
   ]
 
@@ -78,6 +77,18 @@ export function Header() {
               </Link>
 
               <nav className="hidden md:flex items-center gap-6">
+                <Link
+                  href="/"
+                  className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-bold transition-colors ${
+                    pathname === "/"
+                      ? "bg-yellow-400 text-slate-900 shadow-lg"
+                      : "bg-slate-800 text-white hover:bg-slate-700 border border-slate-600"
+                  }`}
+                >
+                  <Home className="w-4 h-4" />
+                  Home
+                </Link>
+
                 {navLinks.map((link) => {
                   const Icon = link.icon
                   const isActive = pathname === link.href
@@ -101,7 +112,7 @@ export function Header() {
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="ghost"
-                      className={`flex items-center gap-2 px-3 py-2 text-sm font-medium hover:bg-slate-800 ${
+                      className={`flex items-center gap-2 px-3 py-2 text-sm font-medium hover:bg-slate-800 transition-colors ${
                         governanceLinks.some((link) => pathname === link.href)
                           ? "bg-yellow-400/20 text-yellow-400 border border-yellow-400/30"
                           : "text-slate-300 hover:text-white"
@@ -109,19 +120,26 @@ export function Header() {
                     >
                       <Building2 className="w-4 h-4" />
                       Governance
-                      <ChevronDown className="w-3 h-3" />
+                      <ChevronDown className="w-3 h-3 transition-transform group-data-[state=open]:rotate-180" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent align="start" className="w-48 bg-slate-800 border-slate-700">
+                  <DropdownMenuContent
+                    align="start"
+                    className="w-48 bg-slate-800 border-slate-700 shadow-xl"
+                    sideOffset={5}
+                  >
                     {governanceLinks.map((link) => {
                       const Icon = link.icon
+                      const isActive = pathname === link.href
                       return (
                         <DropdownMenuItem
                           key={link.href}
                           asChild
-                          className="text-slate-300 hover:text-white hover:bg-slate-700"
+                          className={`text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer ${
+                            isActive ? "bg-yellow-400/10 text-yellow-400" : ""
+                          }`}
                         >
-                          <Link href={link.href} className="flex items-center gap-2 w-full">
+                          <Link href={link.href} className="flex items-center gap-2 w-full px-2 py-1">
                             <Icon className="w-4 h-4" />
                             {link.label}
                           </Link>
@@ -135,7 +153,7 @@ export function Header() {
 
             <div className="flex items-center gap-4">
               <Badge className="gap-2 bg-slate-800 text-slate-300 border-slate-600 hover:bg-slate-700">
-                <Users className="w-4 h-4" />
+                <HardHat className="w-4 h-4" />
                 1,247 Validators
               </Badge>
 
