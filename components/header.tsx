@@ -10,6 +10,7 @@ import { WalletConnection } from "@/components/wallet-connection"
 import { WalletInfo } from "@/components/wallet-info"
 import { Wallet, Users, Home, Vote, Trophy, ChevronDown, Building2, FileText, GitBranch } from "lucide-react"
 import { walletManager } from "@/lib/cardano-wallet"
+import Image from "next/image"
 
 export function Header() {
   const [walletModalOpen, setWalletModalOpen] = useState(false)
@@ -61,34 +62,14 @@ export function Header() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-8">
               <Link href="/" className="flex items-center gap-3">
-                <div className="relative w-10 h-10 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-lg p-0.5">
-                  <div className="w-full h-full bg-slate-900 rounded-lg flex items-center justify-center relative overflow-hidden">
-                    {/* Balance scale symbol */}
-                    <div className="text-white text-xs font-bold">
-                      <div className="flex flex-col items-center">
-                        {/* Radiating lines */}
-                        <div className="flex gap-0.5 mb-1">
-                          <div className="w-0.5 h-1 bg-white rotate-45"></div>
-                          <div className="w-0.5 h-1.5 bg-white"></div>
-                          <div className="w-0.5 h-1 bg-white -rotate-45"></div>
-                        </div>
-                        {/* Balance scale */}
-                        <div className="flex items-center text-[6px]">
-                          <span>R</span>
-                          <div className="mx-1 w-2 h-0.5 bg-white relative">
-                            <div className="absolute -top-0.5 left-1/2 transform -translate-x-1/2 w-0.5 h-1 bg-white"></div>
-                          </div>
-                          <span>M</span>
-                        </div>
-                        {/* Cardano dots */}
-                        <div className="flex gap-0.5 mt-0.5">
-                          <div className="w-0.5 h-0.5 bg-white rounded-full"></div>
-                          <div className="w-0.5 h-0.5 bg-white rounded-full"></div>
-                          <div className="w-0.5 h-0.5 bg-white rounded-full"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                <div className="relative w-10 h-10">
+                  <Image
+                    src="/images/social-truth-app-icon.png"
+                    alt="Social Truth Logo"
+                    width={40}
+                    height={40}
+                    className="rounded-lg"
+                  />
                 </div>
                 <div className="flex flex-col">
                   <span className="text-xl font-bold text-white">SOCIAL TRUTH</span>
