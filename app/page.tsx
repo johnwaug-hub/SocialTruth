@@ -4,6 +4,7 @@ import { Header } from "@/components/header"
 import { Sidebar } from "@/components/sidebar"
 import { Badge } from "@/components/ui/badge"
 import { Shield, Users, Vote, Trophy } from "lucide-react"
+import Image from "next/image"
 
 export default function HomePage() {
   return (
@@ -15,36 +16,13 @@ export default function HomePage() {
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="text-center space-y-6 py-8">
               <div className="flex justify-center mb-6">
-                <div className="relative w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl p-1">
-                  <div className="w-full h-full social-truth-gradient rounded-xl flex items-center justify-center relative overflow-hidden">
-                    <div className="text-white text-lg font-bold">
-                      <div className="flex flex-col items-center">
-                        {/* Radiating lines */}
-                        <div className="flex gap-1 mb-2">
-                          <div className="w-1 h-3 bg-white rotate-45"></div>
-                          <div className="w-1 h-4 bg-white"></div>
-                          <div className="w-1 h-3 bg-white -rotate-45"></div>
-                        </div>
-                        {/* Balance scale */}
-                        <div className="flex items-center text-xs">
-                          <span>REALITY</span>
-                          <div className="mx-2 w-6 h-1 bg-white relative">
-                            <div className="absolute -top-1 left-1/2 transform -translate-x-1/2 w-1 h-3 bg-white"></div>
-                          </div>
-                          <span>MAJORITY</span>
-                        </div>
-                        {/* Cardano dots */}
-                        <div className="flex gap-1 mt-2">
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                          <div className="w-1 h-1 bg-white rounded-full"></div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+                <Image
+                  src="/images/social-truth-main-logo.png"
+                  alt="Social Truth - Reality | Majority"
+                  width={120}
+                  height={120}
+                  className="rounded-2xl"
+                />
               </div>
 
               <h1 className="text-5xl font-bold text-balance social-truth-navy">SOCIAL TRUTH DAO</h1>
