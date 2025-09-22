@@ -7,7 +7,7 @@ import { Suspense } from "react"
 import "./globals.css"
 
 export const metadata: Metadata = {
-  title: "Social Truth DAO",
+  title: "Social Truth",
   description: "Decentralized news verification platform on Cardano",
   generator: "v0.app",
 }

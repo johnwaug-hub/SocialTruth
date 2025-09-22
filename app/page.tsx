@@ -25,7 +25,7 @@ export default function HomePage() {
                 />
               </div>
 
-              <h1 className="text-5xl font-bold text-balance social-truth-navy">SOCIAL TRUTH DAO</h1>
+              <h1 className="text-5xl font-bold text-balance social-truth-navy">SOCIAL TRUTH</h1>
               <p className="text-xl text-muted-foreground text-pretty max-w-2xl mx-auto">
                 Decentralized news verification powered by Cardano blockchain. Submit news, vote on accuracy, and earn
                 reputation through truthful validation.
