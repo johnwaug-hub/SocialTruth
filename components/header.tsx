@@ -5,17 +5,15 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 import { WalletConnection } from "@/components/wallet-connection"
 import { WalletInfo } from "@/components/wallet-info"
-import { Wallet, HardHat, Home, Vote, Trophy, ChevronDown, Building2, FileText, GitBranch } from "lucide-react"
+import { Wallet, HardHat, Home, Vote, Trophy, Building2, FileText, GitBranch } from "lucide-react"
 import { walletManager } from "@/lib/cardano-wallet"
 import Image from "next/image"
 
 export function Header() {
   const [walletModalOpen, setWalletModalOpen] = useState(false)
   const [connectedWallet, setConnectedWallet] = useState<string | null>(null)
-  const [governanceOpen, setGovernanceOpen] = useState(false)
   const pathname = usePathname()
 
   useEffect(() => {
@@ -50,7 +48,7 @@ export function Header() {
   ]
 
   const governanceLinks = [
-    { href: "/dao", label: "DAO Governance", icon: Building2 },
+    { href: "/dao", label: "DAO", icon: Building2 },
     { href: "/whitepaper", label: "White Paper", icon: FileText },
     { href: "/workflow", label: "Workflow", icon: GitBranch },
   ]
@@ -111,49 +109,24 @@ export function Header() {
 
                 <div className="h-6 w-px bg-slate-600 mx-2" />
 
-                <DropdownMenu open={governanceOpen} onOpenChange={setGovernanceOpen}>
-                  <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className={`flex items-center gap-2 px-4 py-2 text-sm font-medium rounded-md border transition-colors ${
-                        governanceLinks.some((link) => pathname === link.href) || governanceOpen
-                          ? "bg-blue-500/20 text-blue-400 border-blue-400/30 shadow-sm"
-                          : "bg-slate-800 text-slate-300 hover:text-white hover:bg-slate-700 border-slate-600"
+                {governanceLinks.map((link) => {
+                  const Icon = link.icon
+                  const isActive = pathname === link.href
+                  return (
+                    <Link
+                      key={link.href}
+                      href={link.href}
+                      className={`flex items-center gap-2 px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                        isActive
+                          ? "bg-blue-500/20 text-blue-400 border border-blue-400/30"
+                          : "text-slate-300 hover:text-white hover:bg-slate-800"
                       }`}
-                      onClick={() => setGovernanceOpen(!governanceOpen)}
                     >
-                      <Building2 className="w-4 h-4" />
-                      Governance
-                      <ChevronDown
-                        className={`w-3 h-3 transition-transform duration-200 ${governanceOpen ? "rotate-180" : ""}`}
-                      />
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent
-                    align="start"
-                    className="w-52 bg-slate-800 border-slate-700 shadow-xl"
-                    sideOffset={5}
-                  >
-                    {governanceLinks.map((link) => {
-                      const Icon = link.icon
-                      const isActive = pathname === link.href
-                      return (
-                        <DropdownMenuItem
-                          key={link.href}
-                          className={`text-slate-300 hover:text-white hover:bg-slate-700 cursor-pointer ${
-                            isActive ? "bg-blue-500/10 text-blue-400" : ""
-                          }`}
-                          onClick={() => setGovernanceOpen(false)}
-                        >
-                          <Link href={link.href} className="flex items-center gap-2 w-full px-3 py-2">
-                            <Icon className="w-4 h-4" />
-                            {link.label}
-                          </Link>
-                        </DropdownMenuItem>
-                      )
-                    })}
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                      <Icon className="w-4 h-4" />
+                      {link.label}
+                    </Link>
+                  )
+                })}
               </nav>
             </div>
 
