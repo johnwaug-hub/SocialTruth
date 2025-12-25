@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Validate HTML
+      run: |
+        echo "Checking HTML syntax..."
+        # Add HTML validation here if needed
+        
+    - name: Check file structure
+      run: |
+        echo "Validating project structure..."
+        test -f index.html || exit 1
+        test -f README.md || exit 1
+        test -f LICENSE || exit 1
+        test -d contracts || exit 1
+        test -d docs || exit 1
+        echo "✓ All required files present"
+    
+    - name: Validate documentation
+      run: |
+        echo "Checking documentation files..."
+        test -f docs/DEPLOYMENT_GUIDE.md || exit 1
+        test -f docs/VALIDATOR_SETUP.md || exit 1
+        test -f docs/LAUNCH_CHECKLIST.md || exit 1
+        echo "✓ Documentation complete"
+    
+    - name: Check smart contracts
+      run: |
+        echo "Validating smart contract files..."
+        test -f contracts/socialtruth.plutus || exit 1
+        test -f contracts/truthtoken.plutus || exit 1
+        echo "✓ Smart contracts present"
+
+  lint:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Markdown lint
+      uses: articulate/actions-markdownlint@v1
+      with:
+        config: .markdownlint.json
+        files: '**/*.md'
+        ignore: node_modules
+      continue-on-error: true

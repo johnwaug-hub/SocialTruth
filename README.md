@@ -14,6 +14,8 @@ A decentralized truth verification platform built on Cardano blockchain. Communi
 - **Reputation System**: Build reputation through accurate voting (Bronze → Silver → Gold → Platinum)
 - **Smart Contracts**: Plutus validators ensure fair play and automatic reward distribution
 - **Multi-Wallet Support**: Nami, Eternl, Flint, and Lace wallet integration
+- **Firebase Backend**: Real-time data synchronization and cloud storage
+- **Analytics Dashboard**: Track platform statistics and user engagement
 
 ## 🎯 How It Works
 
@@ -51,6 +53,7 @@ open index.html
 ```
 socialtruth-dao/
 ├── index.html                    # Main application
+├── firebase-integration.js       # Firebase backend module
 ├── contracts/                    # Smart contracts
 │   ├── socialtruth.plutus       # News & voting validator
 │   ├── truthtoken.plutus        # TRUTH token minting policy
@@ -59,7 +62,8 @@ socialtruth-dao/
 ├── docs/                        # Documentation
 │   ├── DEPLOYMENT_GUIDE.md      # Detailed deployment instructions
 │   ├── VALIDATOR_SETUP.md       # Validator setup guide
-│   └── LAUNCH_CHECKLIST.md      # Pre-launch checklist
+│   ├── LAUNCH_CHECKLIST.md      # Pre-launch checklist
+│   └── FIREBASE_INTEGRATION.md  # Firebase setup guide
 ├── LICENSE
 └── README.md
 ```

@@ -1,44 +1,75 @@
-# Dependencies
+# Node modules
 node_modules/
-package-lock.json
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
 
-# Firebase
-.firebase/
-firebase-debug.log
-firestore-debug.log
-ui-debug.log
+# Build outputs
+dist/
+build/
+*.raw
+*.signed
+*.addr
+*.hash
+
+# Haskell/Cabal
+dist-newstyle/
+.ghc.environment.*
+*.hi
+*.o
+*.prof
+*.aux
+*.hp
+*.eventlog
+.stack-work/
+cabal.project.local
+cabal.project.local~
 
 # IDE
-.idea/
 .vscode/
+.idea/
 *.swp
 *.swo
 *~
-
-# OS
 .DS_Store
-Thumbs.db
 
-# Environment
+# Keys and secrets (IMPORTANT!)
+*.skey
+*.vkey
+*.sk
+payment.skey
+stake.skey
+*.key
+*.keys
 .env
 .env.local
-.env.production
+.env.*.local
 
-# Build
-dist/
-build/
+# Compiled Plutus scripts (include source, not compiled)
+*.plutus.compiled
 
 # Logs
+logs/
 *.log
-npm-debug.log*
 
-# Cache
-.cache/
+# Temporary files
+tmp/
+temp/
+*.tmp
 
-# Docker
-*.tar
-*.gz
-!*.tar.gz
+# OS
+Thumbs.db
+.DS_Store
 
-# Cloud Run
-.gcloudignore
+# Backup files
+*.bak
+*.backup
+*~
+
+# Test data
+test-data/
+test-wallets/
+
+# Private configuration
+config.private.json
+secrets.json
