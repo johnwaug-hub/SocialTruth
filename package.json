@@ -1,34 +1,26 @@
 {
-  "name": "socialtruth-dao",
-  "version": "2.0.0",
-  "description": "Decentralized truth verification platform powered by community voting and Cardano blockchain",
-  "main": "index.html",
+  "name": "functions",
+  "description": "Cloud Functions for Firebase",
   "scripts": {
-    "serve": "npx http-server -p 8000",
-    "firebase:init": "firebase init",
-    "firebase:deploy": "firebase deploy",
-    "firebase:serve": "firebase serve"
+    "lint": "eslint .",
+    "serve": "firebase emulators:start --only functions",
+    "shell": "firebase functions:shell",
+    "start": "npm run shell",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
   },
-  "keywords": [
-    "blockchain",
-    "cardano",
-    "dao",
-    "truth-verification",
-    "firebase",
-    "web3"
-  ],
-  "author": "SocialTruth DAO Team",
-  "license": "MIT",
+  "engines": {
+    "node": "24"
+  },
+  "main": "index.js",
+  "dependencies": {
+    "firebase-admin": "^13.6.0",
+    "firebase-functions": "^7.0.0"
+  },
   "devDependencies": {
-    "firebase-tools": "^13.0.0"
+    "eslint": "^8.15.0",
+    "eslint-config-google": "^0.14.0",
+    "firebase-functions-test": "^3.4.1"
   },
-  "dependencies": {},
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/johnwaug-hub/SocialTruthV2.git"
-  },
-  "bugs": {
-    "url": "https://github.com/johnwaug-hub/SocialTruthV2/issues"
-  },
-  "homepage": "https://github.com/johnwaug-hub/SocialTruthV2#readme"
+  "private": true
 }
