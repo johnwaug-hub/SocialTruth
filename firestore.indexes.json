@@ -11,64 +11,51 @@
         {
           "fieldPath": "createdAt",
           "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "__name__",
-          "order": "DESCENDING"
         }
-      ],
-      "density": "SPARSE_ALL"
+      ]
     },
     {
       "collectionGroup": "news",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "status",
+          "fieldPath": "category",
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "votingDeadline",
-          "order": "ASCENDING"
-        },
-        {
-          "fieldPath": "__name__",
-          "order": "ASCENDING"
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
         }
-      ],
-      "density": "SPARSE_ALL"
+      ]
+    },
+    {
+      "collectionGroup": "users",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "reputation",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "order": "DESCENDING"
+        }
+      ]
     },
     {
       "collectionGroup": "votes",
       "queryScope": "COLLECTION",
       "fields": [
         {
-          "fieldPath": "newsId",
+          "fieldPath": "userId",
           "order": "ASCENDING"
         },
         {
-          "fieldPath": "timestamp",
+          "fieldPath": "createdAt",
           "order": "DESCENDING"
-        },
-        {
-          "fieldPath": "__name__",
-          "order": "DESCENDING"
-        }
-      ],
-      "density": "SPARSE_ALL"
-    }
-  ],
-  "fieldOverrides": [
-    {
-      "collectionGroup": "users",
-      "fieldPath": "reputation",
-      "ttl": false,
-      "indexes": [
-        {
-          "order": "DESCENDING",
-          "queryScope": "COLLECTION"
         }
       ]
     }
-  ]
+  ],
+  "fieldOverrides": []
 }

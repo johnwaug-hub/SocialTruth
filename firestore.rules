@@ -1,9 +1,65 @@
 rules_version = '2';
-
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if false;
+    
+    // Helper functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return request.auth.uid == userId;
+    }
+    
+    // News collection rules
+    match /news/{newsId} {
+      // Anyone can read news
+      allow read: if true;
+      
+      // Authenticated users can create news
+      allow create: if isSignedIn() 
+        && request.resource.data.submitter is string
+        && request.resource.data.title is string
+        && request.resource.data.url is string
+        && request.resource.data.status == 'voting';
+      
+      // Authenticated users can update votes
+      allow update: if isSignedIn()
+        && request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly(['truthVotes', 'falseVotes', 'stakedTokens']);
+      
+      // Only admins can delete (not implemented yet)
+      allow delete: if false;
+    }
+    
+    // Users collection rules
+    match /users/{userId} {
+      // Anyone can read user profiles
+      allow read: if true;
+      
+      // Users can only write their own profile
+      allow create: if isSignedIn() && isOwner(userId);
+      
+      allow update: if isSignedIn() && isOwner(userId);
+      
+      // Users cannot delete their profile
+      allow delete: if false;
+    }
+    
+    // Votes collection (for tracking individual votes)
+    match /votes/{voteId} {
+      allow read: if true;
+      
+      allow create: if isSignedIn()
+        && request.resource.data.userId == request.auth.uid;
+      
+      allow update, delete: if false;
+    }
+    
+    // Stats collection (for global statistics)
+    match /stats/global {
+      allow read: if true;
+      allow write: if false; // Only backend can update
     }
   }
 }
