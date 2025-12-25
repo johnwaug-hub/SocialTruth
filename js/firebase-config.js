@@ -1,26 +1,21 @@
-// Firebase configuration
-// Replace these values with your actual Firebase project credentials
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
-import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-import { getAnalytics } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics.js';
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your Firebase configuration
-// TODO: Replace with your actual Firebase config from Firebase Console
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-    measurementId: "YOUR_MEASUREMENT_ID"
+  apiKey: "AIzaSyAg1Q0_6AvggOiuyvaSHpZ_gYN_VL6msv0",
+  authDomain: "social-truth-31e90.firebaseapp.com",
+  projectId: "social-truth-31e90",
+  storageBucket: "social-truth-31e90.firebasestorage.app",
+  messagingSenderId: "953301894494",
+  appId: "1:953301894494:web:c90bb17babe141c061bbcf",
+  measurementId: "G-LFNHVM60EQ"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-const auth = getAuth(app);
 const analytics = getAnalytics(app);
-
-export { app, db, auth, analytics };
