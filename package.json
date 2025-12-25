@@ -1,0 +1,34 @@
+{
+  "name": "socialtruth-dao",
+  "version": "2.0.0",
+  "description": "Decentralized truth verification platform powered by community voting and Cardano blockchain",
+  "main": "index.html",
+  "scripts": {
+    "serve": "npx http-server -p 8000",
+    "firebase:init": "firebase init",
+    "firebase:deploy": "firebase deploy",
+    "firebase:serve": "firebase serve"
+  },
+  "keywords": [
+    "blockchain",
+    "cardano",
+    "dao",
+    "truth-verification",
+    "firebase",
+    "web3"
+  ],
+  "author": "SocialTruth DAO Team",
+  "license": "MIT",
+  "devDependencies": {
+    "firebase-tools": "^13.0.0"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/johnwaug-hub/SocialTruthV2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/johnwaug-hub/SocialTruthV2/issues"
+  },
+  "homepage": "https://github.com/johnwaug-hub/SocialTruthV2#readme"
+}
