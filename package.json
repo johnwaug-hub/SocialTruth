@@ -1,36 +1,40 @@
 {
   "name": "socialtruth-dao",
-  "version": "2.0.0",
-  "description": "Decentralized truth verification platform powered by community voting and Cardano blockchain",
+  "version": "1.0.0",
+  "description": "Decentralized truth verification platform on Cardano blockchain",
   "main": "index.html",
   "scripts": {
-    "serve": "npx http-server -p 8000",
-    "deploy": "firebase deploy",
-    "deploy:hosting": "firebase deploy --only hosting",
-    "deploy:firestore": "firebase deploy --only firestore",
-    "preview": "firebase hosting:channel:deploy preview",
-    "open": "firebase open hosting:site"
+    "start": "python3 -m http.server 8000",
+    "build": "echo 'No build step required - static HTML app'",
+    "test": "echo 'Tests coming soon'"
   },
-  "keywords": [
-    "blockchain",
-    "cardano",
-    "dao",
-    "truth-verification",
-    "firebase",
-    "web3"
-  ],
-  "author": "SocialTruth DAO Team",
-  "license": "MIT",
-  "devDependencies": {
-    "firebase-tools": "^13.0.0"
-  },
-  "dependencies": {},
   "repository": {
     "type": "git",
-    "url": "https://github.com/johnwaug-hub/SocialTruthV2.git"
+    "url": "git+https://github.com/yourusername/socialtruth-dao.git"
   },
+  "keywords": [
+    "cardano",
+    "blockchain",
+    "dao",
+    "truth",
+    "verification",
+    "fact-checking",
+    "plutus",
+    "web3",
+    "decentralized",
+    "voting"
+  ],
+  "author": "SocialTruth DAO",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/johnwaug-hub/SocialTruthV2/issues"
+    "url": "https://github.com/yourusername/socialtruth-dao/issues"
   },
-  "homepage": "https://github.com/johnwaug-hub/SocialTruthV2#readme"
+  "homepage": "https://github.com/yourusername/socialtruth-dao#readme",
+  "dependencies": {
+    "lucid-cardano": "^0.10.7"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=14.0.0"
+  }
 }

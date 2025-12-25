@@ -1,0 +1,150 @@
+{-# LANGUAGE DataKinds           #-}
+{-# LANGUAGE DeriveAnyClass      #-}
+{-# LANGUAGE DeriveGeneric       #-}
+{-# LANGUAGE FlexibleContexts    #-}
+{-# LANGUAGE NoImplicitPrelude   #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TemplateHaskell     #-}
+{-# LANGUAGE TypeApplications    #-}
+{-# LANGUAGE TypeFamilies        #-}
+{-# LANGUAGE TypeOperators       #-}
+
+module SocialTruth where
+
+import           PlutusTx.Prelude
+import           Plutus.V2.Ledger.Api
+import           Plutus.V2.Ledger.Contexts
+import qualified PlutusTx
+import           PlutusTx.Builtins
+import qualified Ledger.Typed.Scripts as Scripts
+import           Ledger.Ada as Ada
+
+-- | News submission data structure
+data NewsSubmission = NewsSubmission
+    { newsTitle       :: BuiltinByteString
+    , newsUrl         :: BuiltinByteString
+    , newsDescription :: BuiltinByteString
+    , newsCategory    :: BuiltinByteString
+    , submitter       :: PubKeyHash
+    , submissionFee   :: Integer
+    , submittedAt     :: POSIXTime
+    }
+
+PlutusTx.unstableMakeIsData ''NewsSubmission
+PlutusTx.makeLift ''NewsSubmission
+
+-- | Vote record
+data Vote = Vote
+    { voter         :: PubKeyHash
+    , voteDecision  :: Bool  -- True = TRUE vote, False = FALSE vote
+    , stakeAmount   :: Integer
+    , votedAt       :: POSIXTime
+    }
+
+PlutusTx.unstableMakeIsData ''Vote
+PlutusTx.makeLift ''Vote
+
+-- | Datum stored at the script address
+data NewsDatum = NewsDatum
+    { newsData      :: NewsSubmission
+    , truthVotes    :: Integer
+    , falseVotes    :: Integer
+    , totalStaked   :: Integer
+    , votes         :: [Vote]
+    , votingDeadline :: POSIXTime
+    , isFinalized   :: Bool
+    }
+
+PlutusTx.unstableMakeIsData ''NewsDatum
+PlutusTx.makeLift ''NewsDatum
+
+-- | Redeemer actions
+data NewsRedeemer
+    = SubmitNews NewsSubmission
+    | CastVote Vote
+    | FinalizeVoting
+    | ClaimRewards PubKeyHash
+
+PlutusTx.unstableMakeIsData ''NewsRedeemer
+PlutusTx.makeLift ''NewsRedeemer
+
+-- | Validator parameters
+data ValidatorParams = ValidatorParams
+    { minSubmissionFee :: Integer  -- Minimum 10 TRUTH tokens
+    , minStakeAmount   :: Integer  -- Minimum 1 TRUTH token
+    , votingPeriod     :: POSIXTime -- Voting period duration
+    }
+
+PlutusTx.unstableMakeIsData ''ValidatorParams
+PlutusTx.makeLift ''ValidatorParams
+
+-- | Validator logic
+{-# INLINABLE mkValidator #-}
+mkValidator :: ValidatorParams -> NewsDatum -> NewsRedeemer -> ScriptContext -> Bool
+mkValidator params datum redeemer ctx =
+    case redeemer of
+        SubmitNews submission ->
+            traceIfFalse "Invalid submission fee" checkSubmissionFee &&
+            traceIfFalse "News already submitted" (not $ isFinalized datum) &&
+            traceIfFalse "Invalid submitter signature" checkSubmitterSigned
+          where
+            checkSubmissionFee = submissionFee submission >= minSubmissionFee params
+            checkSubmitterSigned = txSignedBy info (submitter submission)
+
+        CastVote vote ->
+            traceIfFalse "Voting period ended" checkVotingPeriod &&
+            traceIfFalse "Invalid stake amount" checkStakeAmount &&
+            traceIfFalse "Voter must sign transaction" checkVoterSigned &&
+            traceIfFalse "Already voted" checkNotVotedBefore &&
+            traceIfFalse "News finalized" (not $ isFinalized datum)
+          where
+            checkVotingPeriod = from (votingDeadline datum) `contains` txInfoValidRange info
+            checkStakeAmount = stakeAmount vote >= minStakeAmount params
+            checkVoterSigned = txSignedBy info (voter vote)
+            checkNotVotedBefore = not $ any (\v -> voter v == voter vote) (votes datum)
+
+        FinalizeVoting ->
+            traceIfFalse "Voting period not ended" checkVotingEnded &&
+            traceIfFalse "Already finalized" (not $ isFinalized datum)
+          where
+            checkVotingEnded = to (votingDeadline datum) `contains` txInfoValidRange info
+
+        ClaimRewards pkh ->
+            traceIfFalse "Voting not finalized" (isFinalized datum) &&
+            traceIfFalse "Not a voter" checkIsVoter &&
+            traceIfFalse "Wrong side voted" checkCorrectVote &&
+            traceIfFalse "Claimer must sign" (txSignedBy info pkh)
+          where
+            checkIsVoter = any (\v -> voter v == pkh) (votes datum)
+            winningVote = truthVotes datum > falseVotes datum
+            userVote = head [v | v <- votes datum, voter v == pkh]
+            checkCorrectVote = voteDecision userVote == winningVote
+  where
+    info :: TxInfo
+    info = scriptContextTxInfo ctx
+
+-- | Typed validator
+data SocialTruthTypes
+instance Scripts.ValidatorTypes SocialTruthTypes where
+    type instance DatumType SocialTruthTypes = NewsDatum
+    type instance RedeemerType SocialTruthTypes = NewsRedeemer
+
+typedValidator :: ValidatorParams -> Scripts.TypedValidator SocialTruthTypes
+typedValidator params = Scripts.mkTypedValidator @SocialTruthTypes
+    ($$(PlutusTx.compile [|| mkValidator ||]) `PlutusTx.applyCode` PlutusTx.liftCode params)
+    $$(PlutusTx.compile [|| wrap ||])
+  where
+    wrap = Scripts.wrapValidator @NewsDatum @NewsRedeemer
+
+-- | Validator script
+validator :: ValidatorParams -> Validator
+validator = Scripts.validatorScript . typedValidator
+
+-- | Validator hash
+validatorHash :: ValidatorParams -> ValidatorHash
+validatorHash = Scripts.validatorHash . typedValidator
+
+-- | Validator address
+validatorAddress :: ValidatorParams -> Address
+validatorAddress = scriptHashAddress . validatorHash

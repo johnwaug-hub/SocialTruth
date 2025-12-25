@@ -1,225 +1,150 @@
-# SocialTruth DAO - Decentralized Truth Verification Platform
+# SocialTruth DAO
 
-A decentralized platform for truth verification powered by community voting and integrated with Firebase for real-time data management.
+A decentralized truth verification platform built on Cardano blockchain. Community-powered fact-checking with tokenized incentives.
 
-## Features
+![Cardano](https://img.shields.io/badge/Cardano-Mainnet-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Plutus](https://img.shields.io/badge/Plutus-V2-purple)
 
-- 📰 **News Submission**: Submit news articles for community verification
-- 🗳️ **Voting System**: Vote on news veracity by staking TRTH tokens
-- 🏆 **Reputation System**: Build reputation through accurate voting
-- 📊 **Real-time Updates**: Firebase integration for live data synchronization
-- 🔐 **Wallet Integration**: Connect Cardano wallets (Nami, Eternl, Flint)
-- 📈 **Leaderboard**: Track top contributors and their achievements
-- 🎖️ **Tier System**: Progress through Bronze, Silver, Gold, and Platinum tiers
+## 🌟 Features
 
-## Tech Stack
+- **Decentralized Voting**: Community votes on news truthfulness
+- **Token Staking**: Stake TRUTH tokens on your votes to earn rewards
+- **On-Chain Records**: All submissions and votes permanently recorded on Cardano
+- **Reputation System**: Build reputation through accurate voting (Bronze → Silver → Gold → Platinum)
+- **Smart Contracts**: Plutus validators ensure fair play and automatic reward distribution
+- **Multi-Wallet Support**: Nami, Eternl, Flint, and Lace wallet integration
 
-- **Frontend**: HTML5, Tailwind CSS, Vanilla JavaScript
-- **Backend**: Firebase (Firestore, Authentication, Analytics)
-- **Blockchain**: Cardano (wallet integration ready)
-- **Hosting**: Firebase Hosting (optional) or any static host
+## 🎯 How It Works
 
-## Prerequisites
+1. **Submit News** - Pay 10 TRUTH tokens to submit news for verification
+2. **Community Votes** - Users stake TRUTH tokens voting TRUE or FALSE
+3. **Earn Rewards** - Accurate voters receive proportional rewards
+4. **Build Reputation** - Consistent accuracy increases your tier and influence
 
-- Node.js (v14 or higher)
-- Firebase account
+## 🚀 Quick Start
+
+### Prerequisites
+
+- A Cardano wallet (Nami, Eternl, Flint, or Lace)
+- TRUTH tokens for participation
 - Modern web browser
 
-## Setup Instructions
+### Installation
 
-### 1. Firebase Setup
-
-1. Go to [Firebase Console](https://console.firebase.google.com/)
-2. Create a new project or select an existing one
-3. Enable Firestore Database:
-   - Go to Firestore Database
-   - Click "Create database"
-   - Start in production mode (or test mode for development)
-   
-4. Enable Authentication:
-   - Go to Authentication
-   - Enable "Anonymous" sign-in method
-   
-5. Get your Firebase configuration:
-   - Go to Project Settings > General
-   - Scroll to "Your apps" section
-   - Click the web icon (</>)
-   - Register your app
-   - Copy the Firebase configuration object
-
-### 2. Configure the Application
-
-1. Open `js/firebase-config.js`
-2. Replace the placeholder values with your Firebase configuration:
-
-```javascript
-const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID",
-    measurementId: "YOUR_MEASUREMENT_ID"
-};
+1. Clone the repository:
+```bash
+git clone https://github.com/yourusername/socialtruth-dao.git
+cd socialtruth-dao
 ```
 
-### 3. Firestore Database Structure
-
-Create the following collections in Firestore:
-
-#### Collection: `news`
-```javascript
-{
-  title: string,
-  url: string,
-  description: string,
-  category: string,
-  submitter: string,
-  status: string, // 'voting' | 'verified' | 'rejected'
-  truthVotes: number,
-  falseVotes: number,
-  stakedTokens: number,
-  deadline: timestamp,
-  createdAt: timestamp
-}
+2. Open the app:
+```bash
+# Simply open the HTML file in your browser
+open index.html
 ```
 
-#### Collection: `users`
-```javascript
-{
-  name: string,
-  walletAddress: string,
-  votes: number,
-  accuracy: number,
-  reputation: number,
-  tier: string, // 'bronze' | 'silver' | 'gold' | 'platinum'
-  createdAt: timestamp
-}
+3. Connect your wallet and start verifying news!
+
+## 📁 Project Structure
+
+```
+socialtruth-dao/
+├── index.html                    # Main application
+├── contracts/                    # Smart contracts
+│   ├── socialtruth.plutus       # News & voting validator
+│   ├── truthtoken.plutus        # TRUTH token minting policy
+│   ├── CompileValidator.hs      # Compilation script
+│   └── generate-validator-address.sh
+├── docs/                        # Documentation
+│   ├── DEPLOYMENT_GUIDE.md      # Detailed deployment instructions
+│   ├── VALIDATOR_SETUP.md       # Validator setup guide
+│   └── LAUNCH_CHECKLIST.md      # Pre-launch checklist
+├── LICENSE
+└── README.md
 ```
 
-### 4. Firestore Security Rules
+## 🔧 Configuration
 
-Add these security rules in Firestore:
+The app is pre-configured for Cardano Mainnet:
 
-```javascript
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    // News collection
-    match /news/{newsId} {
-      allow read: if true;
-      allow create: if request.auth != null;
-      allow update: if request.auth != null;
-    }
-    
-    // Users collection
-    match /users/{userId} {
-      allow read: if true;
-      allow write: if request.auth != null && request.auth.uid == userId;
-    }
-  }
-}
-```
+### TRUTH Token
+- **Policy ID**: `f7d9753d6f766edc8be954ceaaee06c48a748ca2368224b5b9d77135`
+- **Token Name**: TRUTHDA
+- **Total Supply**: 10,000,000 TRUTH
 
-### 5. Running the Application
+### Network
+- **Network**: Cardano Mainnet
+- **Blockfrost API**: Configured (replace with your key for production)
+- **Validator Address**: `addr1q8zns9rdm4xnq3ehlpf4ee0cksjv2mlmqv3de0278atxdet7glzxtk7nlqjx7kz7atl608vfxw7ahcznluv023kp0cgsw68nw4`
 
-#### Option 1: Local Development
+## 💎 TRUTH Token
 
-Simply open `index.html` in your web browser, or use a local server:
+The TRUTH token is the native utility token for SocialTruth DAO:
+
+- **Submission Fee**: 10 TRUTH to submit news
+- **Voting Stake**: Minimum 1 TRUTH to vote
+- **Rewards**: Distributed to accurate voters
+- **Governance**: Future DAO voting rights
+
+## 🏗️ Smart Contracts
+
+### News Validator (`socialtruth.plutus`)
+
+Handles news submission and voting logic:
+- Validates submission fees
+- Records votes on-chain
+- Enforces voting deadlines
+- Manages reward distribution
+
+### Token Minting Policy (`truthtoken.plutus`)
+
+Controls TRUTH token supply:
+- Maximum supply: 10M tokens
+- Controlled minting
+- Burn mechanism for deflationary tokenomics
+
+## 📖 Documentation
+
+- [Deployment Guide](docs/DEPLOYMENT_GUIDE.md) - Complete deployment instructions
+- [Validator Setup](docs/VALIDATOR_SETUP.md) - How to set up the validator
+- [Launch Checklist](docs/LAUNCH_CHECKLIST.md) - Pre-launch testing guide
+
+## 🔐 Security
+
+- All transactions require wallet signatures
+- Smart contracts validate all operations
+- On-chain vote recording prevents manipulation
+- Time-locked voting periods
+- Double-voting prevention
+
+## 🛠️ Development
+
+### Building Contracts
 
 ```bash
-# Using Python
-python -m http.server 8000
-
-# Using Node.js http-server
-npx http-server -p 8000
+cd contracts
+cabal build
 ```
 
-Then navigate to `http://localhost:8000`
+### Generating Validator Address
 
-#### Option 2: Firebase Hosting
-
-1. Install Firebase CLI:
 ```bash
-npm install -g firebase-tools
+cd contracts
+./generate-validator-address.sh
 ```
 
-2. Login to Firebase:
-```bash
-firebase login
-```
+### Testing
 
-3. Initialize Firebase in the project:
-```bash
-firebase init
-```
-   - Select "Hosting"
-   - Choose your Firebase project
-   - Set public directory to current directory (.)
-   - Configure as single-page app: No
-   - Don't overwrite index.html
+1. Connect wallet to testnet
+2. Obtain test TRUTH tokens
+3. Submit test news
+4. Cast test votes
+5. Verify transactions on Cardanoscan
 
-4. Deploy:
-```bash
-firebase deploy
-```
+## 🤝 Contributing
 
-## Project Structure
-
-```
-SocialTruthV2/
-├── index.html              # Main HTML file
-├── styles/
-│   └── main.css           # Custom styles
-├── js/
-│   ├── firebase-config.js # Firebase configuration
-│   └── app.js            # Main application logic
-├── .gitignore            # Git ignore file
-├── README.md             # This file
-└── firebase.json         # Firebase hosting config
-```
-
-## Features Overview
-
-### News Submission
-- Users connect their Cardano wallet
-- Submit news with title, URL, description, and category
-- Pay 10 TRTH tokens as submission fee
-
-### Voting System
-- Vote TRUE or FALSE on submitted news
-- Stake TRTH tokens with your vote
-- Higher stakes = higher potential rewards
-- Voting period: 7 days per submission
-
-### Reputation & Tiers
-- Earn reputation through accurate voting
-- Progress through tiers:
-  - **Bronze**: 0-999 reputation
-  - **Silver**: 1000-2499 reputation
-  - **Gold**: 2500-4999 reputation
-  - **Platinum**: 5000+ reputation
-
-### Leaderboard
-- Top 10 contributors displayed
-- Ranked by reputation score
-- Shows voting accuracy and total votes
-
-## Demo Mode
-
-The application includes demo/fallback mode that works without Firebase:
-- Sample news items displayed
-- Local state management for testing
-- All features functional for demonstration
-
-## Browser Support
-
-- Chrome/Edge 90+
-- Firefox 88+
-- Safari 14+
-
-## Contributing
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 1. Fork the repository
 2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
@@ -227,32 +152,44 @@ The application includes demo/fallback mode that works without Firebase:
 4. Push to the branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-## Roadmap
+## 📊 Roadmap
 
-- [ ] Smart contract integration with Cardano
-- [ ] TRTH token implementation
-- [ ] Advanced reputation algorithm
-- [ ] Mobile app (React Native)
-- [ ] Multi-language support
-- [ ] AI-powered fact checking assistance
-- [ ] Rewards distribution system
+- [x] Core voting mechanism
+- [x] TRUTH token integration
+- [x] Multi-wallet support
+- [x] Cardano mainnet deployment
+- [ ] Automated reward distribution
+- [ ] Mobile app
+- [ ] DAO governance module
+- [ ] Category-specific validators
+- [ ] AI-assisted fact verification
+- [ ] Cross-chain bridge
 
-## License
+## 📜 License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## Support
+## 🙏 Acknowledgments
 
-For issues and questions:
-- Create an issue in the GitHub repository
-- Contact: support@socialtruth.io
+- Built on [Cardano](https://cardano.org)
+- Smart contracts powered by [Plutus](https://plutus.readthedocs.io)
+- Uses [Lucid](https://github.com/spacebudz/lucid) for wallet interaction
+- Blockchain data via [Blockfrost](https://blockfrost.io)
 
-## Acknowledgments
+## 📞 Support
 
-- Cardano blockchain community
-- Firebase for backend infrastructure
-- Tailwind CSS for styling framework
+- **Issues**: [GitHub Issues](https://github.com/yourusername/socialtruth-dao/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/yourusername/socialtruth-dao/discussions)
+- **Twitter**: [@SocialTruthDAO](https://twitter.com/SocialTruthDAO)
+
+## 🌐 Links
+
+- **Website**: https://socialtruth.io (coming soon)
+- **Documentation**: https://docs.socialtruth.io (coming soon)
+- **Explorer**: [View on Cardanoscan](https://cardanoscan.io/token/f7d9753d6f766edc8be954ceaaee06c48a748ca2368224b5b9d77135.54525554484441)
 
 ---
 
-Built with ❤️ for a more truthful internet
+**Built with ❤️ on Cardano**
+
+*Empowering truth through decentralization*

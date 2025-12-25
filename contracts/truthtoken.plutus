@@ -1,0 +1,85 @@
+{-# LANGUAGE DataKinds           #-}
+{-# LANGUAGE DeriveAnyClass      #-}
+{-# LANGUAGE DeriveGeneric       #-}
+{-# LANGUAGE FlexibleContexts    #-}
+{-# LANGUAGE NoImplicitPrelude   #-}
+{-# LANGUAGE OverloadedStrings   #-}
+{-# LANGUAGE ScopedTypeVariables #-}
+{-# LANGUAGE TemplateHaskell     #-}
+{-# LANGUAGE TypeApplications    #-}
+{-# LANGUAGE TypeFamilies        #-}
+{-# LANGUAGE TypeOperators       #-}
+
+module TruthToken where
+
+import           PlutusTx.Prelude
+import           Plutus.V2.Ledger.Api
+import           Plutus.V2.Ledger.Contexts
+import qualified PlutusTx
+import           PlutusTx.Builtins
+
+-- | Minting policy parameters
+data MintingParams = MintingParams
+    { mpTokenName     :: TokenName
+    , mpMaxSupply     :: Integer
+    , mpTreasuryPkh   :: PubKeyHash
+    }
+
+PlutusTx.unstableMakeIsData ''MintingParams
+PlutusTx.makeLift ''MintingParams
+
+-- | Minting redeemer
+data MintingRedeemer
+    = MintTokens Integer      -- Amount to mint
+    | BurnTokens Integer      -- Amount to burn
+    | DistributeRewards       -- Distribute rewards to voters
+
+PlutusTx.unstableMakeIsData ''MintingRedeemer
+PlutusTx.makeLift ''MintingRedeemer
+
+{-# INLINABLE mkPolicy #-}
+mkPolicy :: MintingParams -> MintingRedeemer -> ScriptContext -> Bool
+mkPolicy params redeemer ctx =
+    case redeemer of
+        MintTokens amount ->
+            traceIfFalse "Treasury must sign" treasurySigned &&
+            traceIfFalse "Exceeds max supply" withinSupplyLimit &&
+            traceIfFalse "Invalid mint amount" (amount > 0)
+          where
+            treasurySigned = txSignedBy info (mpTreasuryPkh params)
+            currentMint = case flattenValue (txInfoMint info) of
+                [(_, tn, amt)] | tn == mpTokenName params -> amt
+                _ -> 0
+            withinSupplyLimit = currentMint <= mpMaxSupply params
+
+        BurnTokens amount ->
+            traceIfFalse "Invalid burn amount" (amount > 0) &&
+            traceIfFalse "Must burn exact amount" correctBurnAmount
+          where
+            currentBurn = case flattenValue (txInfoMint info) of
+                [(_, tn, amt)] | tn == mpTokenName params -> negate amt
+                _ -> 0
+            correctBurnAmount = currentBurn == amount
+
+        DistributeRewards ->
+            traceIfFalse "Treasury must sign" treasurySigned
+          where
+            treasurySigned = txSignedBy info (mpTreasuryPkh params)
+  where
+    info :: TxInfo
+    info = scriptContextTxInfo ctx
+
+-- | Compile the policy
+policy :: MintingParams -> MintingPolicy
+policy params = mkMintingPolicyScript $
+    $$(PlutusTx.compile [|| \p -> mkUntypedMintingPolicy (mkPolicy p) ||])
+    `PlutusTx.applyCode`
+    PlutusTx.liftCode params
+
+-- | Get policy ID
+policyId :: MintingParams -> CurrencySymbol
+policyId = scriptCurrencySymbol . policy
+
+-- | Helper to get the token AssetClass
+truthToken :: MintingParams -> AssetClass
+truthToken params = AssetClass (policyId params, mpTokenName params)
