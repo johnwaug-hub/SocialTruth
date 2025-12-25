@@ -1,0 +1,31 @@
+# Git files
+.git
+.gitignore
+
+# Node modules
+node_modules
+npm-debug.log
+
+# Firebase
+.firebase
+firebase-debug.log
+
+# Documentation (keep essential ones)
+SETUP_GUIDE.md
+
+# IDE
+.vscode
+.idea
+*.swp
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Build files
+dist
+build
+
+# Environment files
+.env
+.env.local

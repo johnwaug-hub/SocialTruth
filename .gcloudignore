@@ -1,0 +1,40 @@
+# This file specifies files that are intentionally untracked by gcloud
+# Similar to .gitignore
+
+.gcloudignore
+.git
+.gitignore
+
+# Node
+node_modules/
+npm-debug.log
+
+# Build
+dist/
+build/
+
+# Documentation
+SETUP_GUIDE.md
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+
+# Logs
+*.log

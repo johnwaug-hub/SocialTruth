@@ -1,2 +1,44 @@
+# Dependencies
 node_modules/
-*.local
+package-lock.json
+
+# Firebase
+.firebase/
+firebase-debug.log
+firestore-debug.log
+ui-debug.log
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.production
+
+# Build
+dist/
+build/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Cache
+.cache/
+
+# Docker
+*.tar
+*.gz
+!*.tar.gz
+
+# Cloud Run
+.gcloudignore
